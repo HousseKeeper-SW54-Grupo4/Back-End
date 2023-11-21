@@ -1,20 +1,13 @@
 package backend.housekeeper.houseelegantservice.infrastucture.persistence.jpa.repositories;
 
 import backend.housekeeper.houseelegantservice.domain.model.aggregates.House;
+import backend.housekeeper.houseelegantservice.domain.model.valueobjects.StreetAddress;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface HouseRepository {
-    House save(House house);
-    Optional<House> findById(Long id);
-    List<House> findAll();
-
-    void deleteById(Long id);
-
-    List<House> findByCountryAndCity(String country, String city);
-
-    List<House> findByCountry(String country);
-
-    List<House> findByCity(String city);
+@Repository
+public interface HouseRepository extends JpaRepository<House, Long> {
+    Optional<House> findByAddress(StreetAddress address);
 }

@@ -1,14 +1,10 @@
 package backend.housekeeper.houseelegantservice.domain.model.aggregates;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Getter;
+import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
-
+@Entity
 public class Mensajeria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +13,10 @@ public class Mensajeria {
 
     private String nombre;
 
-    @Column(name = "description") // Puedes personalizar el nombre de la columna si es necesario
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "photo_face") // Puedes personalizar el nombre de la columna si es necesario
+    @Column(name = "photo_face")
     private String photoFace;
 
     @CreatedDate
@@ -29,12 +25,14 @@ public class Mensajeria {
     @LastModifiedDate
     private Date updatedAt;
 
-    public Mensajeria(Long id, String nombre, String description, String photoFace, Date createdAt, Date updatedAt) {
+    public Mensajeria(Long id, String nombre, String description, String photoFace) {
         this.id = id;
         this.nombre = nombre;
         this.description = description;
         this.photoFace = photoFace;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    }
+
+    public Mensajeria() {
+
     }
 }

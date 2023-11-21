@@ -3,74 +3,39 @@ package backend.housekeeper.houseelegantservice.application.internal.commandserv
 import backend.housekeeper.houseelegantservice.domain.model.aggregates.House;
 import backend.housekeeper.houseelegantservice.domain.model.command.CreateHouseCommand;
 import backend.housekeeper.houseelegantservice.domain.model.command.UpdateHouseCommand;
+import backend.housekeeper.houseelegantservice.domain.model.valueobjects.StreetAddress;
 import backend.housekeeper.houseelegantservice.domain.service.HouseCommandService;
 import backend.housekeeper.houseelegantservice.infrastucture.persistence.jpa.repositories.HouseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class HouseCommandServiceImpl implements HouseCommandService {
-    private final HouseRepository houseRepository;
 
+    private final HouseRepository houseRepository;
 
     public HouseCommandServiceImpl(HouseRepository houseRepository) {
         this.houseRepository = houseRepository;
     }
+
+
     @Override
     public Long handle(CreateHouseCommand command) {
-        return null;
+        var streetAddress = new StreetAddress(command.streetAddress(), command.city(), command.country());
+        houseRepository.findByAddress(streetAddress).map(house ->{
+            throw new IllegalArgumentException("House with address "+ streetAddress.getStreetAddress() +
+                    " already exists");
+        });
+
+        var house = new House(command.streetAddress(), command.city(), command.country(), command.price(),
+                command.photoUrl(), command.capacity(), command.rating());
+        houseRepository.save(house);
+        return house.getId();
     }
 
     @Override
-    public void updateHouse(Long houseId, UpdateHouseCommand command) {
-        House existingHouse = houseRepository.findById(houseId)
-                .orElseThrow(() -> new HouseNotFoundException("House not found"));
-
-        // Validar los datos del comando antes de actualizar la casa
-        /*
-        existingHouse.setCountry(command.country());
-        existingHouse.setCity(command.city());
-        existingHouse.setStreetAddress(command.streetAddress());
-        existingHouse.setPrice(command.price());
-        existingHouse.setRating(command.rating());
-        existingHouse.setPhotoUrl(command.photoUrl());
-        existingHouse.setCapacity(command.capacity());
-        */
-
-        existingHouse.setAddress(existingHouse.getAddress()); //no estoy seguro
-        existingHouse.setPrice(command.price());
-        existingHouse.setRating(command.rating());
-        existingHouse.setPhotoUrl(command.photoUrl());
-        existingHouse.setCapacity(command.capacity());
-
-        houseRepository.save(existingHouse);
-    }
-    @Override
-    public House createHouse(CreateHouseCommand command) {
-
-        House newHouse = new House(command.country(), command.city(), command.streetAddress());
-
-        /*
-        setCountry(command.country());
-        newHouse.setCity(command.city());
-        newHouse.setStreetAddress(command.streetAddress());
-        */
-
-        newHouse.setAddress(newHouse.getAddress()); //no estoy seguro
-        newHouse.setPrice(command.price());
-        newHouse.setRating(command.rating());
-        newHouse.setPhotoUrl(command.photoUrl());
-        newHouse.setCapacity(command.capacity());
-
-        return houseRepository.save(newHouse);
-    }
-
-    @Override
-    public void deleteHouse(Long houseId) {
-        // Verificar si la casa existe antes de intentar eliminar
-        House existingHouse = houseRepository.findById(houseId)
-                .orElseThrow(() -> new HouseNotFoundException("House not found"));
-
-        houseRepository.deleteById(houseId);
+    public Optional<House> handle(UpdateHouseCommand command) {
+        return Optional.empty();
     }
 }

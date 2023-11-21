@@ -1,7 +1,6 @@
 package backend.housekeeper.houseelegantservice.domain.model.aggregates;
 import backend.housekeeper.houseelegantservice.domain.model.valueobjects.EmailAddress;
 import backend.housekeeper.houseelegantservice.domain.model.valueobjects.KeeperName;
-import backend.housekeeper.houseelegantservice.domain.model.valueobjects.KeeperRecordId;
 import backend.housekeeper.houseelegantservice.domain.model.valueobjects.StreetAddress;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,6 +11,7 @@ import java.util.Date;
 
 
 @Embeddable
+@Entity
 public class Keeper {
     @Getter
     @Id
@@ -40,7 +40,7 @@ public class Keeper {
 
 
     @Column(name = "number")
-    private int number;
+    private Integer number;
 
 
     @Embedded
@@ -51,7 +51,7 @@ public class Keeper {
     private String photoUrl;
 
     @Column(name = "rating")
-    private double rating;
+    private Float rating;
 
     @CreatedDate
     private Date createdAt;
@@ -60,7 +60,7 @@ public class Keeper {
     private Date updatedAt;
 
 
-    public Keeper(String firstName, String lastName, String description,Date birthdate,int number,String email, String street, String city, String country) {
+    public Keeper(String firstName, String lastName, String description,Date birthdate,Integer number,String email, String street, String city, String country) {
         this.name = new KeeperName(firstName, lastName);
         this.description = description;
         this.birthdate=birthdate;
@@ -81,7 +81,5 @@ public class Keeper {
     public String getStreetAddress() {
         return this.address.getStreetAddress();
     }
-
-
 
 }

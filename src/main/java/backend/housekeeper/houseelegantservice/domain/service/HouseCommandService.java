@@ -4,9 +4,9 @@ import backend.housekeeper.houseelegantservice.domain.model.aggregates.House;
 import backend.housekeeper.houseelegantservice.domain.model.command.CreateHouseCommand;
 import backend.housekeeper.houseelegantservice.domain.model.command.UpdateHouseCommand;
 
+import java.util.Optional;
+
 public interface HouseCommandService {
     Long handle(CreateHouseCommand command);
-    House createHouse(CreateHouseCommand command);
-    void updateHouse(Long houseId, UpdateHouseCommand command);
-    void deleteHouse(Long houseId);
+    Optional<House> handle(UpdateHouseCommand command);
 }

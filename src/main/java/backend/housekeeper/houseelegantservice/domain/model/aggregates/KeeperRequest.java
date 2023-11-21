@@ -10,7 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.util.Date;
 
 
-
+@Entity
 public class KeeperRequest extends AuditableModel {
     @Getter
     @Id
@@ -25,7 +25,7 @@ public class KeeperRequest extends AuditableModel {
     @Getter
     private String photoUrl;
     @Getter
-    private double rating;
+    private Float rating;
 
     @CreatedDate
     private Date createdAt;
@@ -42,4 +42,7 @@ public class KeeperRequest extends AuditableModel {
         this.photoUrl = photoUrl;
     }
 
+    public KeeperRequest() {
+
+    }
 }
